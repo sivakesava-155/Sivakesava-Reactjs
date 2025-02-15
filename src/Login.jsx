@@ -32,15 +32,18 @@ function Login()
     return(
        <>
        <div className="login-continer">
-    <h1>Login Page</h1>
+   <center><h1 > Login </h1></center>
     <label >Username:</label>
+    <br/>
       <input
       type="text"
       ref={username}  
       placeholder="Enter your username"    
       />
-      <br/><br/>
+      <br/>
+      <br/>
     <label>Password:</label>
+    <br/>
     <input
       type="password"
       ref={password}  
