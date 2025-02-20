@@ -475,7 +475,7 @@ footer {
 }
 
 .increment {
-  background-color:;
+  
   color: black;
 }
 
@@ -484,7 +484,7 @@ footer {
 }
 
 .decrement {
-  background-color:;
+ 
   color: black;
   
 }
@@ -802,7 +802,7 @@ margin-left: 10px;
   background: #FDF4A9;
   border: none;
   cursor: pointer;
-  transition: background 0.3s ease-in-out;
+  transition:  0.3s ease-in-out;
 }
 
 .category-card button:hover {
