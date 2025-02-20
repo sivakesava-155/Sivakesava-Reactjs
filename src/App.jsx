@@ -50,7 +50,7 @@ function App()
     <Link to='/orders'className="myclass" ><i className="fas fa-history" style={{color:""}}></i> Orders</Link>
     {
     isAuthenticated?
-    <>welcome  
+    <><p style={{color:"white"}}><strong>welcome to Fresh Mart</strong> </p>
     <button onClick={()=>dispatch(logout())}>Logout</button>
     
     </>
