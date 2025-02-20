@@ -1,127 +1,141 @@
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "./store";
 import { useState } from "react";
+import "./item.css";
+import { useNavigate } from "react-router-dom";
 
 function Nonveg() {
-  const nonVegItems = useSelector((state) => state.Products.NonVeg);
+  const nonvegItems = useSelector((state) => state.Products.NonVeg);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  // State for search, price filters, and pagination.
   const [search, setSearch] = useState("");
-  const [price100to200, setPrice100to200] = useState(false);
-  const [price200to300, setPrice200to300] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
-  const perPage = 2;
+  const [filters, setFilters] = useState({ price100To200: false, price200To300: false });
 
-  // 1. Filter items based on the search query.
-  let filteredItems = nonVegItems.filter((item) =>
-    item.name.toLowerCase().includes(search.toLowerCase())
-  );
+  const perPage = 10;
 
-  // 2. Apply price filtering if either checkbox is checked.
-  if (price100to200 || price200to300) {
-    filteredItems = filteredItems.filter((item) => {
-      const inFirstRange = price100to200 && item.price >= 100 && item.price <= 200;
-      const inSecondRange = price200to300 && item.price > 200 && item.price <= 300;
-      return inFirstRange || inSecondRange;
-    });
-  }
-
-  // 3. Pagination logic.
-  const totalPages = Math.ceil(filteredItems.length / perPage);
-  const pageEndItemIndex = perPage * pageNumber;
-  const pageStartItemIndex = pageEndItemIndex - perPage;
-  const paginatedItems = filteredItems.slice(pageStartItemIndex, pageEndItemIndex);
-
-  const handlePageNumber = (page) => {
-    if (page >= 1 && page <= totalPages) {
-      setPageNumber(page);
-    }
+  const handleFilterChange = (filter) => {
+    setFilters((prev) => ({ ...prev, [filter]: !prev[filter] }));
   };
+
+  const filteredItems = nonvegItems.filter((item) => {
+    if (!item.name.toLowerCase().includes(search.toLowerCase())) return false;
+    if (filters.price100To200 && !(item.price >= 100 && item.price <= 200)) return false;
+    if (filters.price200To300 && !(item.price >= 200 && item.price <= 300)) return false;
+    return true;
+  });
+
+  const totalPages = Math.ceil(filteredItems.length / perPage);
+  const paginatedItems = filteredItems.slice((pageNumber - 1) * perPage, pageNumber * perPage);
 
   return (
     <>
-      {/* Price Filter Checkboxes */}
-      <div>
-        <label>
-          <input
-            type="checkbox"
-            checked={price100to200}
-            onChange={(e) => {
-              setPrice100to200(e.target.checked);
-              setPageNumber(1); // Reset to first page when filter changes.
-            }}
-          />
-          100-200
-        </label>
-        <label style={{ marginLeft: "10px" }}>
-          <input
-            type="checkbox"
-            checked={price200to300}
-            onChange={(e) => {
-              setPrice200to300(e.target.checked);
-              setPageNumber(1); // Reset to first page when filter changes.
-            }}
-          />
-          200-300
-        </label>
-      </div>
-      <br />
+      <div className="milk-container">
+        <input
+          type="text"
+          placeholder="Search product..."
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setPageNumber(1);
+          }}
+          className="search-input"
+        />
 
-      {/* Search Input */}
-      <input
-        type="text"
-        placeholder="Search product..."
-        value={search}
-        onChange={(e) => {
-          setSearch(e.target.value);
-          setPageNumber(1); // Reset to first page when search changes.
-        }}
-      />
-      <br /><br />
+        {/* Filter Checkboxes */}
+        <div className="filter-container">
+          {["price100To200", "price200To300"].map((filter, index) => (
+            <label key={index}>
+              <input
+                type="checkbox"
+                checked={filters[filter]}
+                onChange={() => handleFilterChange(filter)}
+              />
+              {filter === "price100To200" ? "₹100 - ₹200" : "₹200 - ₹300"}
+            </label>
+          ))}
+        </div>
 
-      {/* Product List */}
-      <ul>
-        <h3>
-          {(search || price100to200 || price200to300) ? "Filtered Products:" : "All Products:"}
-        </h3>
-        {paginatedItems.length > 0 ? (
-          paginatedItems.map((item, index) => (
-            <li className="labels" key={index}>
-              {item.name} - {item.price}
-              <button onClick={() => dispatch(addToCart(item))}>Add to cart</button>
-            </li>
-          ))
-        ) : (
-          <p>No items found</p>
+        {/* Product Grid */}
+        <div className="product-grid">
+          {paginatedItems.length ? (
+            paginatedItems.map((item, index) => (
+              <div className="veg-container" key={index}>
+                <img src={item.image} alt={item.name} className="product-image" />
+                <p className="product-name">{item.name} </p>
+                <p className="product-price">₹{item.price}</p>
+                <button onClick={() => dispatch(addToCart(item))} className="action-button">
+                  Add to cart
+                </button>
+              </div>
+            ))
+          ) : (
+            <p>No items found</p>
+          )}
+        </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="pagination-container">
+            <button
+              onClick={() => setPageNumber((prev) => Math.max(prev - 1, 1))}
+              disabled={pageNumber === 1}
+              className="action-button"
+            >
+              Previous
+            </button>
+            {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
+              <button
+                key={page}
+                onClick={() => setPageNumber(page)}
+                className={`page-button ${pageNumber === page ? "page-active" : ""}`}
+              >
+                {page}
+              </button>
+            ))}
+            <button
+              onClick={() => setPageNumber((prev) => Math.min(prev + 1, totalPages))}
+              disabled={pageNumber === totalPages}
+              className="action-button"
+            >
+              Next
+            </button>
+          </div>
         )}
-      </ul>
+      </div>
+<div className="cutter">  
 
-      {/* Pagination Controls */}
-      <div>
-        <button onClick={() => handlePageNumber(pageNumber - 1)} disabled={pageNumber === 1}>
-          Previous
-        </button>
-        <button
-          onClick={() => handlePageNumber(pageNumber + 1)}
-          disabled={pageNumber === totalPages || totalPages === 0}
-        >
-          Next
-        </button>
-      </div>
-      <div style={{ marginTop: "10px" }}>
-        {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
-          <button
-            key={page}
-            onClick={() => handlePageNumber(page)}
-            className="page"
-            style={{ fontWeight: pageNumber === page ? "bold" : "normal" }}
-          >
-            {page}
-          </button>
-        ))}
-      </div>
-    </>
+<footer className="footer">
+  <div>
+<h3 className="follow-title" style={{ color: "#800080" }}>Follow Us</h3>
+<div className="social-icons">
+ <a href="#"><i className="fab fa-facebook" style={{ color: "blue" }}></i></a>
+ <a href="#"><i className="fab fa-twitter" style={{ color: "blue" }}></i></a>
+ <a href="#"><i className="fab fa-instagram" style={{ color: "palevioletred" }}></i></a>
+ <p>📞 Contact: 123-456-7890</p>
+</div>
+</div>    
+
+
+<div>
+<h3 className="quick-links-title">Quick Links</h3>
+<button onClick={() => navigate("/home")} style={{ background: "none", color: "blue", cursor: "pointer" }}>Home</button>
+<button onClick={() => navigate("/aboutus")} style={{ background: "none", color: "blue", cursor: "pointer" }}>About Us</button>
+<button onClick={() => navigate("/contactus")} style={{ background: "none", color: "blue", cursor: "pointer" }}>Contact Us</button>
+</div>
+
+
+
+
+
+</footer>
+
+<div className="copy">
+<center><p>© 2025 Fresh Mart. All Rights Reserved. ❤️ Developed by Sivakesava.</p></center>
+</div>
+</div> 
+  </>
   );
 }
 

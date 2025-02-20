@@ -1,119 +1,134 @@
 import { useDispatch, useSelector } from "react-redux";
-import { clearCart, decrement, increment,  purchasedetails,  remove } from "./store";
+import { clearCart, decrement, increment, purchasedetails, remove } from "./store";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Cart()
-{
-      let cartObjects=useSelector(state=>state.Cart)
-       let { isAuthenticated } = useSelector((state) => state.auth);
-               let navigate =useNavigate()
-     let dispath=useDispatch();
-     
-       let cartItems=cartObjects.map((item,index) =>(
-      <li key={index}>
-    {item.name}  {item.price} 
-   <button onClick={()=>dispath(increment(item))}>+</button>
-   <button onClick={()=>dispath(decrement(item))}>-</button>
-      {item.quantity}
-        <button onClick={()=>dispath(remove(item))}>Remove</button>
-    </li>
-   ));
- let totalPrice=cartObjects.reduce((sum,item)=>
- sum+item.quantity*item.price,0 );
 
-const [discountPercentage,setDiscountPercentage]=useState(0);
-const [showDiscountPrice,setShowDiscountPrice]=useState(false)
- let discountAmount=totalPrice*discountPercentage/100;
- let finalAmount=totalPrice-discountAmount;
+function Cart() {
+  
+  let cartObjects = useSelector((state) => state.Cart);
+  let { isAuthenticated } = useSelector((state) => state.auth);
+  let navigate = useNavigate();
+  let dispatch = useDispatch();
 
- let [cuponcode,setCuponcode]=useState('');
- let [cuponcodeDiscountPer,setCuponcodeDiscountPer]=useState(0);
- const [showCupondiscont,setShowCupondiscont]=useState(false)
+  let totalPrice = cartObjects.reduce((sum, item) => sum + item.quantity * item.price, 0);
 
- let handlingcuponcodeper=()=>{
-    switch(cuponcode.toUpperCase())
-    {
-    case'RATAN10':setCuponcodeDiscountPer(10);
-    break;
-    case'RATAN20':setCuponcodeDiscountPer(20);
-    break;
-    case'RATAN30':setCuponcodeDiscountPer(30);
-    break;
-    default:
-     alert("invalid cupon code");
-     setCuponcodeDiscountPer(0);
+  const [discountPercentage, setDiscountPercentage] = useState(0);
+  const [showDiscountPrice, setShowDiscountPrice] = useState(false);
+  let discountAmount = (totalPrice * discountPercentage) / 100;
+  
+
+  let [cuponcode, setCuponcode] = useState('');
+  let [cuponcodeDiscountPer, setCuponcodeDiscountPer] = useState(0);
+  const [showCuponDiscount, setShowCuponDiscount] = useState(false);
+
+  let handleCuponCode = () => {
+    switch (cuponcode.toUpperCase()) {
+      case 'SIVA10':
+        setCuponcodeDiscountPer(10);
+        break;
+      case 'SIVA20':
+        setCuponcodeDiscountPer(20);
+        break;
+      case 'SIVA30':
+        setCuponcodeDiscountPer(30);
+        break;
+      default:
+        alert("Invalid coupon code");
+        setCuponcodeDiscountPer(0);
     }
- }
+  };
 
- let cuponDiscountAmount=totalPrice*cuponcodeDiscountPer/100;
-  
-  
- const handlePurchaseDetails = () => {
+  let cuponDiscountAmount = (totalPrice * cuponcodeDiscountPer) / 100;
+
+  let finalAmount = totalPrice - discountAmount-cuponDiscountAmount;
+
+  const handlePurchase = () => {
     isAuthenticated
       ? (() => {
-          const purchaseDate = new Date().toLocaleDateString();
           let purchaseDetails = {
             items: [...cartObjects],
-            total: totalPrice,
-            date: purchaseDate,
-          }
-  
-          dispath(purchasedetails(purchaseDetails)) ;
-            dispath(clearCart())
+            total: finalAmount,
+            date: new Date().toLocaleDateString(),
+            time: new Date().toLocaleTimeString()
+          };
+          dispatch(purchasedetails(purchaseDetails));
+          dispatch(clearCart());
         })()
-      : 
-      (() => {
-        alert("Please login to proceed with the purchase.");
-        navigate("/login");
-      })();
+      : (() => {
+          alert("Please login to proceed with the purchase.");
+          navigate("/login");
+        })();
   };
-  
 
-
-   
-
-    return(
+  return (
+    <div className="cart-container">
+      {cartObjects.length > 0 ? (
         <>
-        {
-       cartObjects.length>0?
-            <div> 
-        <h2> This is Cart items</h2>
-        <ul>{cartItems}</ul>
-        <p style={{color:'green',fontFamily:'cursive'  }}>your price value is :${totalPrice}</p>
-        {
-            showDiscountPrice&&
-            <div>
-        <p style={{color:'orange',fontFamily:'revert-layer'}}>your products discount Applied:{discountPercentage}%</p>
-        <p style={{color:'brown',fontFamily:'revert'  }}>your discount Amount is:${discountAmount }</p>
-        </div>
-         }
-        <p>your net Amount to pay :${finalAmount}</p>
-        <button style={{backgroundColor:'green' }} onClick={()=>{setDiscountPercentage(10),setShowDiscountPrice(true)}}>Add 10% discount</button>
-        <button style={{backgroundColor:'yellow' }}onClick={()=>{setDiscountPercentage(20),setShowDiscountPrice(true)}}>Add 20% discount</button>
-        <button style={{backgroundColor:'orange'  }}onClick={()=>{setDiscountPercentage(30),setShowDiscountPrice(true)}}>Add 30% discount</button>
-        <p><input 
-          type="text"  
-          value={cuponcode} 
-          onChange={(e)=>setCuponcode(e.target.value)} 
-          placeholder="Enter your cupon code"/>
-        <button onClick={()=>{handlingcuponcodeper() ,setShowCupondiscont(true)}}>Apply cupon code</button>
-        </p>
-        {
-        showCupondiscont&&
-        <div>
-        <p>your cupon discount:{cuponcodeDiscountPer}%</p>
-        <p>your coupn Applied:{cuponDiscountAmount}</p>
-        </div>
-         }
-         <button onClick={()=>handlePurchaseDetails()}>complete purchaise</button>
-        </div>:
-        <h2 style={{color:'green',fontFamily:'cursive'  }}> your Cart is empty</h2>
-                  
-}
-        </>
+          <h2>Your Cart</h2>
+          <table className="cart-table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {cartObjects.map((item, index) => (
+                <tr key={index}>
+                  <td><figure><img src={item.image} alt={item.name} className="cart-image" /><center><strong>{item.name}</strong></center></figure></td>
+                  <td><strong>₹{item.price}</strong></td>
+                  <td><strong>{item.quantity}</strong></td>
+                  <td>
+                    <button className="action-button increment" onClick={() => dispatch(increment(item))}>+</button>
+                    <button className="action-button decrement" onClick={() => dispatch(decrement(item))}>-</button>
+                    <button className="action-button remove" onClick={() => dispatch(remove(item))}>Remove</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+            <div className="discount">
+          <p><strong>Your Total Price: ₹{totalPrice}</strong></p>
 
-    )
+          {showDiscountPrice && (
+            <div className="discount-section">
+            <strong> <p>Applied Discount: {discountPercentage}%</p>
+              <p>Discount Amount: ₹{discountAmount}</p></strong> 
+            </div>
+          )}
+
+          <p><strong>Your Net Amount to Pay: ₹{finalAmount}</strong></p>
+
+          <button className="action-button" onClick={() => { setDiscountPercentage(10); setShowDiscountPrice(true); }}>10% Discount</button>
+          <button className="action-button" onClick={() => { setDiscountPercentage(20); setShowDiscountPrice(true); }}>20% Discount</button>
+          <button className="action-button" onClick={() => { setDiscountPercentage(30); setShowDiscountPrice(true); }}>30% Discount</button>
+
+          <div className="discount-section">
+            <input type="text" className="discount-input" value={cuponcode} onChange={(e) => setCuponcode(e.target.value)} placeholder="Enter Coupon Code" />
+            <button className="apply-button" onClick={() => { handleCuponCode(); setShowCuponDiscount(true); }} style={{color:'black'}}>Apply</button>
+          </div>
+
+          {showCuponDiscount && (
+            <div className="discount-section">
+              <p>Coupon Discount: {cuponcodeDiscountPer}%</p>
+              <p>Coupon Discount Amount: ₹{cuponDiscountAmount}</p>
+            </div>
+          )}
+
+          <button className="purchase-button" onClick={handlePurchase}>Complete Purchase</button>
+          </div>
+        </>
+      ) : (
+        <div>
+        <h2 className="empty-cart"><strong>Your Cart is Empty</strong></h2>
+        <img src="milk/cart.jpg" width='50%' height='50%' onClick={()=>navigate("/home")}></img>
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default Cart;

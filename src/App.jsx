@@ -27,14 +27,27 @@ function App()
     <BrowserRouter>
     <nav className="navbar">
     
-    <Link to='/home' className="myclass">Home</Link>
-    <Link to='/veg'className="myclass">Vegitems</Link>
-    <Link to='/nonveg'className="myclass">Nonvegitems</Link>
-    <Link to='/milk'className="myclass">Milkitems</Link>
-    <Link to='/aboutus' className="myclass">Aboutus</Link>
-    <Link to='/contactus'className="myclass">Contactus</Link>
-    <Link to='/cart'className="myclass">Cart <span>{totalItems}</span></Link>
-    <Link to='/orders'className="myclass">Orders</Link>
+    <Link to='/home' className="myclass"><i class="fa-solid fa-house"></i>
+
+
+
+
+    Home</Link>
+    <Link to='/veg'className="myclass"><i class="fa-solid fa-carrot"></i>Vegetables</Link>
+    <Link to='/nonveg'className="myclass"><i className="fa-solid fa-apple-whole"></i>fruits</Link>
+    <Link to='/milk'className="myclass"><span role="img" aria-label="milk" >🥛</span>
+
+
+    Milkitems</Link>
+    <Link to='/aboutus'><i class="fas fa-user-circle"></i>
+    Aboutus</Link>
+    <Link to='/contactus'><i className="fas fa-phone-volume"></i>
+
+
+    Contactus</Link>
+    <Link to='/cart'className="myclass"><i className="fas fa-shopping-cart"></i> 
+    Cart<span className="cartcount">{totalItems}</span></Link>
+    <Link to='/orders'className="myclass" ><i className="fas fa-history" style={{color:""}}></i> Orders</Link>
     {
     isAuthenticated?
     <>welcome  
@@ -43,7 +56,7 @@ function App()
     </>
     :
     <>
-      <Link to='/login'className="myclass">Signin</Link>
+      <Link to='/login'className="myclass"><i class="fa-solid fa-arrow-right-to-bracket"></i> Signin</Link>
     </>
     }
     </nav>
