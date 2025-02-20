@@ -26,6 +26,7 @@ function Home() {
       <header className="home-header">
         <h1>Welcome To Fresh Mart</h1>
         <p>Your one-stop shop for fresh and quality products</p>
+        <p>100% Pure Veg</p>
       </header>
 
       <div className="home-container">

@@ -49,6 +49,7 @@ function Aboutus() {
       <header>
         <h1>Fresh Mart</h1>
         <p>Your Trusted Organic Food Store</p>
+        <p><strong>100% Pure Veg</strong></p>
       </header>
 
       <section className="about">

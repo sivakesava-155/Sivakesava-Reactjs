@@ -61,9 +61,8 @@
   }
 }
 
-.body{
-  /* background-color:blue; */
-}
+
+
 /* General Page Styling */
 body {
   background-color: #f0f7f2;
@@ -179,13 +178,7 @@ h1{
 }
 input{
    margin-top: 15px;
- /* border: black;
-  height: 30px;
-  border-color: blue;
-  border-radius: 10px;
-  height: 50px;
-  width: 110%;  */
-  /* margin-top: 20px; */
+ 
   width: 300px;
   padding: 10px;
   border: 2px solid lightblue;
@@ -376,6 +369,8 @@ footer {
   display: grid;
   grid-template-rows: 80% 20%;
   margin-bottom: 0px;
+  
+  
 }
 .copy{
   background-color: #4CAF50;
@@ -448,13 +443,15 @@ footer {
   background: white;
   border-radius: 8px;
   overflow: hidden;
+  padding: 10%;
 }
 
 .cart-table th,
 .cart-table td {
-  padding: 12px;
+  padding: 16px;
   border-bottom: 1px solid #ddd;
   text-align: center;
+
 }
 
 .cart-table th {
@@ -479,16 +476,17 @@ footer {
 
 .increment {
   background-color:;
-  color: white;
+  color: black;
 }
 
 .increment:hover {
-  background-color: #0056b3;
+  background-color: green;
 }
 
 .decrement {
   background-color:;
   color: black;
+  
 }
 
 .decrement:hover {
@@ -496,7 +494,7 @@ footer {
 }
 
 .remove {
-  background-color:none;
+  background-color:red;
   color: white;
 }
 
@@ -562,6 +560,49 @@ footer {
   border-radius: 5px;
   margin-bottom: 10px;
 }
+
+
+
+
+.cart-container {
+  min-height: 500px; /* Ensures the container doesn’t shift */
+}
+
+.cart-table {
+  table-layout: fixed; /* Prevents table from resizing dynamically */
+  width: 50%;
+}
+
+.cart-table th,
+.cart-table td {
+  padding: 20px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+  width: 160px; 
+  white-space: nowrap; 
+}
+
+.action-button {
+  min-width: 3px; 
+  min-height: 35px; 
+  display: float;
+  /* align-items: flex-end;
+  justify-content: flex-start; */
+  padding-right: 15px;
+  /* margin-right: 3x;
+  margin-left: 3px; */
+}
+
+
+/* .increment,
+.decrement {
+  transition: background-color 0.2s ease, transform 0.1s ease-in-out;
+} */
+
+/* .increment:active,
+.decrement:active {
+  transform: scale(0.65); } */
+
 .orders-container {
   max-width: 800px;
   margin: 20px auto;

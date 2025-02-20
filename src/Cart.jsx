@@ -81,9 +81,9 @@ function Cart() {
                   <td><figure><img src={item.image} alt={item.name} className="cart-image" /><center><strong>{item.name}</strong></center></figure></td>
                   <td><strong>₹{item.price}</strong></td>
                   <td><strong>{item.quantity}</strong></td>
-                  <td>
+                  <td className="action">
                     <button className="action-button increment" onClick={() => dispatch(increment(item))}>+</button>
-                    <button className="action-button decrement" onClick={() => dispatch(decrement(item))}>-</button>
+                    <button className="action-button decrement" onClick={() => dispatch(decrement(item))}><stong>-</stong></button>
                     <button className="action-button remove" onClick={() => dispatch(remove(item))}>Remove</button>
                   </td>
                 </tr>
