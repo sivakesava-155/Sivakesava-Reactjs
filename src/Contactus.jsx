@@ -1,6 +1,6 @@
-// Contactus.jsx
+
 import React from 'react';
-import './Contactus.css';
+import './ContactUs.css';
 import { useNavigate } from 'react-router-dom';
 
 function Contactus  ()  {
