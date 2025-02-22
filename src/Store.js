@@ -1,5 +1,5 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
-// import store from "./redux/store.js";
+import store from "./redux/store.js";
 
 import { act } from "react";
 
