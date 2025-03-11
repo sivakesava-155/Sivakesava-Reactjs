@@ -18,7 +18,7 @@ function NotFound()
    
     return(
         <>
-      <h1><img src="notfound.png" /></h1>
+      <center><h1><img src="notfound.png"  width='30%'  height='20%'/></h1></center>
         </>
     )
 }

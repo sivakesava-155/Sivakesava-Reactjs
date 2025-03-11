@@ -40,7 +40,7 @@ import { configureStore, createSlice } from "@reduxjs/toolkit";
           {name:"Pomagranet",price:220,image:"fruits/pomagranet.jpg"},
           {name:"Sithapal",price:230,image:"fruits/sithapal.jpg"},
           {name:"Kiwi",price:250,image:"fruits/kiwi.jpg"},
-          {name:"Jack fruit",price:300,image:"fruits/   panasa.jpg"},
+          {name:"Jack fruit",price:300,image:"fruits/panasa.jpg"},
           {name:"Strawberry",price:320,image:"fruits/straberry.jpg"},
           {name:"Watermelon",price:100,image:"fruits/watermelon.jpg"},
            {name:"Dragon fruit",price:240,image:"fruits/dragon.jpg"},

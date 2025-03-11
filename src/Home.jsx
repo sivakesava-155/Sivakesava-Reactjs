@@ -72,7 +72,7 @@ function Home() {
         </footer>
 
         <div className="copy">
-          <center><p>© 2025 Fresh Mart. All Rights Reserved. ❤️ Developed by Siva.</p></center>
+          <center><p>© 2025 Fresh Mart. All Rights Reserved. ❤️ Developed by Sivakesava.</p></center>
         </div>
       </div>
     </>
