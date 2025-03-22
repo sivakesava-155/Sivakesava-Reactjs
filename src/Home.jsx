@@ -40,7 +40,7 @@ function Home() {
           {/* Fruits Slider */}
           <div className="category-card">
             <img src={slides[1][currentIndex]} alt="Fruits" />
-            <button onClick={() => navigate("/fruits")}>Explore Fruits</button>
+            <button onClick={() => navigate("/nonveg")}>Explore Fruits</button>
           </div>
 
           {/* Milk & Dairy Slider */}
